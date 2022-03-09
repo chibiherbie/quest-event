@@ -14,11 +14,12 @@ logging.basicConfig(level=logging.INFO)
 
 @dp.message_handler(content_types=['text'])
 async def said(message: types.Message):
-    action = main.story(message.from_user.id)
+    action = main.story(message.from_user.id, message.text)
 
-    if (action == 0):
+    if (action == 'next'):
         await bot.send_message(message.chat.id, message.text)
-
+    elif (action == 'отказано'):
+        await  bot.send_message(message.chat.id, 'Отказано')
 
 if __name__ == '__main__':
     # dp.loop.create_task(get_start())
