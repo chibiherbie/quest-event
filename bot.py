@@ -19,7 +19,7 @@ async def said(message: types.Message):
     if (action == 'next'):
         await bot.send_message(message.chat.id, message.text)
     elif (action == 'отказано'):
-        await  bot.send_message(message.chat.id, 'Отказано')
+        await bot.send_message(message.chat.id, 'Отказано')
 
 if __name__ == '__main__':
     # dp.loop.create_task(get_start())

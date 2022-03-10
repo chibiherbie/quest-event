@@ -1,26 +1,41 @@
-import db
+from db import DataBase
+from player import Player
 import config
 
-db_user = db.DataBase()
+db_user = DataBase()
 
 
-def check_user(id, msg=''):
+def data_user(id, msg=''):
     if db_user.get_id(id):
+
         print("ID игрока - ", id)
-        return True
+        return db_user.get_data(id)
 
     # TEST PASSWORD
     if msg != config.PASSWORD:
-        return False
+        return None
     # ------------
 
-    db_user.insert_id(id)
+    db_user.create_player(id)
+
     print("Игрок добавлен с ID - ", id)
-    return True
+    return db_user.get_data(id)
 
 
 def story(user_id, msg=''):
-    if check_user(user_id, msg):
+    data_player = data_user(user_id, msg)
+
+    print(data_player)
+
+    if data_player:
+        player = Player(data_player[2])
+
+        #
+        # ACTION
+        #
+
+        db_user.update_story(user_id, player.story_num + 1)
+
         return 'sdf'
     return 'отказано'
 

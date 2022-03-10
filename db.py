@@ -10,7 +10,8 @@ class DataBase:
 
             self.con = sqlite3.connect(config.DATABASEPATH)
             self.cur = self.con.cursor()
-            self.cur.execute('''CREATE TABLE user (id INTEGER PRIMARY KEY, user_id INTEGER NOT NULL, story_num TEXT);''')
+            self.cur.execute('''CREATE TABLE user (id INTEGER PRIMARY KEY, user_id INTEGER NOT NULL,
+             story_num INTEGER);''')
 
             print('DataBase create')
             return
@@ -23,6 +24,13 @@ class DataBase:
     def get_id(self, id):
         return self.cur.execute('''SELECT user_id FROM user WHERE user_id=? ''', (id, )).fetchone()
 
-    def insert_id(self, id):
-        self.cur.execute('''INSERT INTO user(user_id) VALUES(?);''', (id, ))
+    def get_data(self, id):
+        return self.cur.execute('''SELECT * FROM user WHERE user_id=? ''', (id,)).fetchone()
+
+    def create_player(self, id):
+        self.cur.execute('''INSERT INTO user(user_id, story_num) VALUES(?, ?);''', (id, 0))
+        self.con.commit()
+
+    def update_story(self, id, num):
+        self.cur.execute('''UPDATE user SET story_num = ? WHERE user_id=?;''', (num, id))
         self.con.commit()
